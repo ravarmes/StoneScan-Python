@@ -102,7 +102,6 @@ def create_model(num_classes: int):
     return model.to(Config.DEVICE)
 
 def train_one_run(model, train_loader, val_loader, num_epochs: int, lr: float, class_weights: torch.Tensor) -> Tuple[float, Dict]:
-    # AQUI ESTÁ A CHAVE: CrossEntropy com pesos para equilibrar as classes
     criterion = nn.CrossEntropyLoss(weight=class_weights)
     optimizer = optim.Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=lr)
     
