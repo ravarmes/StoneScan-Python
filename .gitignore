@@ -35,7 +35,7 @@ ENV/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# TensorFlow/Model files
+# Model files (TensorFlow and PyTorch)
 logs/
 *.keras
 *.h5
@@ -43,8 +43,12 @@ logs/
 *.tflite
 saved_model/
 best_model.keras
+*.pth
+*.pt
 
 # Project specific
+results/
+dataset/
 training.log
 training_history.png
 

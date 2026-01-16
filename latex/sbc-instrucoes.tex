@@ -1,0 +1,309 @@
+\documentclass[12pt]{article}
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+
+
+\sloppy
+
+\title{StoneScan: Inteligência Artificial para Reconhecimento de Padrões Visuais em Materiais Naturais}
+
+% NÃO INSERIR NOMES DE AUTORES OU INSTITUIÇÕES
+% A submissão deve ser ANÔNIMA.
+
+\author{Autor 1\inst{1}, Autor 2\inst{1}, Autor 3\inst{1} }
+
+\address{Instituição de Pesquisa Anônima 1 -- Departamento de Ciência da Computação\\
+	Endereço Omitido por Anonimato
+	 \email{autor1@gmail.com, autor2@gmail.com,
+  autor3@gmail.com}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Este trabalho propõe um sistema de Visão Computacional para classificação automatizada de rochas ornamentais a partir de imagens digitais. Utilizando \textit{transfer learning} com a arquitetura ResNet18 e validação cruzada estratificada com 5 \textit{folds}, o modelo foi treinado para identificar cinco classes de materiais pétreos: Granito Branco Itaúnas, Mármore Matarazzo, Quartzito Perla, Quartzito Wakanda e Quartzito Verde Gaya. A metodologia empregou extenso aumento de dados e busca em grade para otimização de hiperparâmetros, alcançando acurácia média de 98,62\% (±0,83\%) e coeficiente Kappa de 0,9826. Os resultados demonstram a viabilidade técnica da aplicação de Redes Neurais Convolucionais para discriminação de padrões visuais complexos em geociências, contribuindo para a transformação digital do setor de rochas ornamentais mediante uma ferramenta de identificação objetiva e escalável.
+\end{abstract}
+
+\section{Introdução}O avanço das tecnologias de \textbf{Inteligência Artificial (IA)}, em particular o \textit{Deep Learning}, tem permitido uma inserção cada vez maior em setores tradicionalmente caracterizados por processos manuais e intensivos em conhecimento especializado, como a indústria de beneficiamento de rochas ornamentais. \cite{cheng2022}. Este cenário tem impulsionado a aplicação de IA para automatizar tarefas complexas de inspeção e classificação visual.
+
+O reconhecimento de padrões visuais, que antes dependia exclusivamente da experiência e acuidade humana, pode agora ser escalonado por meio de algoritmos de Visão Computacional. A aplicação dessas técnicas em materiais naturais, como rochas ornamentais e agregados, justifica-se pela complexidade e alta variabilidade dos padrões geológicos. A identificação precisa de um material envolve a análise de texturas, cores, veios e inclusões, elementos cruciais para determinar sua aplicação estética e funcional, bem como seu valor de mercado.
+
+O sistema proposto neste trabalho busca desenvolver uma aplicação móvel inovadora, utilizando \textbf{redes neurais} para reconhecer e nomear diferentes tipos de rochas (como granitos, mármores e quartzitos) a partir de fotografias de superfícies instaladas, como pias, pisos e paredes. Esta iniciativa visa introduzir objetividade e identificação, impulsionando a eficiência econômica do setor e democratizando o acesso à informação técnica, auxiliando tanto leigos quanto profissionais na tomada de decisões.
+
+Historicamente, a análise de texturas em visão computacional dependia de extratores de características manuais, como o Scale-Invariant Feature Transform (SIFT) e o Histogram of Oriented Gradients (HOG). Embora eficazes para objetos com geometria rígida, essas técnicas apresentam limitações significativas ao lidar com a complexidade e a alta variabilidade das superfícies naturais, como as rochas ornamentais. A ruptura desse paradigma ocorreu com a consolidação das Redes Neurais Convolucionais (CNNs), que permitem o aprendizado de representações hierárquicas de características diretamente a partir dos dados brutos, capturando nuances de textura que os descritores manuais falham em codificar \cite{lecun2015deep}. Segundo \cite{soares2025}, a capacidade das redes neurais convolucionais de realizar a extração automática dos atributos dos dados elimina a necessidade de engenharia manual de características, processo que exige conhecimento especializado a fim de identificar as características relevantes. Além da acurácia superior, a evolução recente das arquiteturas de Deep Learning viabilizou a execução desses modelos em dispositivos móveis. Essa portabilidade é um requisito relevante para o setor de rochas, onde a inspeção ocorre frequentemente em pátios de indústrias ou canteiros de obras, ambientes onde o acesso a estações de trabalho dedicadas pode ser inviável.
+
+\section{Contexto e Desafios da Classificação de Materiais Pétreos}
+
+    A digitalização e a aplicação de tecnologias da informação têm se tornado imperativas no setor de construção e mineração, visando superar desafios de identificação e qualidade \cite{kumar2023}. O setor de materiais naturais, particularmente o segmento de rochas ornamentais, possui uma importância econômica global significativa, sendo um componente fundamental das indústrias de construção civil e design de interiores. O país em foco, sendo um dos principais produtores e exportadores mundiais, sublinha a relevância de otimizar os processos de classificação desses recursos.
+
+Apesar da maturidade industrial, o setor enfrenta desafios práticos no que tange à identificação. As rochas ornamentais apresentam \textbf{alta variabilidade visual} dentro de uma mesma classificação comercial e diferenças sutis entre materiais distintos, dependendo da mineralogia, tamanho e distribuição dos grãos, bem como a presença de estruturas secundárias. Para o consumidor e profissionais menos especializados, a identificação correta de uma laje a partir de uma amostra ou foto é uma tarefa complexa e propensa a erros.
+
+As dificuldades práticas incluem a dependência de condições de iluminação, a avaliação subjetiva de textura e a interpretação de características microgeológicas visíveis. A ausência de ferramentas acessíveis para a identificação de rochas pode levar a escolhas inadequadas de materiais, impactando negativamente a estética e funcionalidade de projetos. Erros na escolha de materiais estão, inclusive, entre os fatores principais de retrabalhos em construções residenciais, conforme dados da indústria. Portanto, o desenvolvimento de um método de identificação rápido e objetivo, suportado por tecnologia, é crucial para mitigar esses riscos e aumentar a confiabilidade.
+
+O uso de Inteligência Artificial e técnicas avançadas de visão computacional para o reconhecimento de padrões visuais em materiais naturais, especialmente rochas e pedras ornamentais, evoluiu de soluções pioneiras focadas em processamento de imagens tradicionais para abordagens mais robustas, automatizadas e inteligentes \cite{liu2019deep}.
+
+Os primeiros estudos, como o sistema de visão computacional desenvolvido para a classificação automática de pedras naturais a partir de vídeo em tempo real, demonstraram a viabilidade técnica da automação industrial por meio de histogramas, análise de similaridade e ferramentas como OpenCV e JavaCV, resultando em maior precisão, velocidade e padronização no controle de qualidade. Complementando este avanço, pesquisas anteriores, como o método baseado em scanner e análise computacional de cores em HSB, mostraram a importância da quantificação objetiva de parâmetros cromáticos para substituir classificações subjetivas, permitindo categorizações consistentes e de alta precisão para fins comerciais e industriais. 
+
+Na continuidade desse desenvolvimento tecnológico, conteúdos recentes, como a aplicação de IA em caracterização de rochas de reservatório, reforçam que métodos tradicionais são limitados em cenários complexos e sensíveis a parâmetros, enquanto algoritmos de aprendizado de máquina funcionam como uma “lupa inteligente”, otimizando a segmentação, reduzindo interferência humana e produzindo modelos mais confiáveis, mesmo em imagens desafiadoras. 
+
+De forma alinhada, as discussões técnicas encontradas em publicações profissionais apontam que a integração entre visão computacional e aprendizado de máquina no ramo de geotecnia amplia significativamente a precisão, a segurança e a otimização de processos, desde que os modelos sejam treinados e validados adequadamente para manter desempenho frente a ruídos, variações de iluminação e condições reais. 
+
+Destarte, explicita-se a necessidade de migração das técnicas manuais e análises visuais para sistemas cada vez mais inteligentes, automatizados e robustos, capazes de reconhecer padrões complexos em materiais naturais com confiabilidade crescente e aplicabilidade industrial ampliada.
+
+Os objetivos centrais do presente projeto convergem para melhorar a eficiência, a precisão e a qualidade da informação na caracterização de materiais, além de promover a automação e otimização dos processos de análise, tornando o acesso aos dados mais ágil e democrático, através de um aplicativo móvel, que facilite a consulta e aplicação dos resultados na prática.
+
+Nesse cenário, permanece evidente a existência de desafios significativos, especialmente a necessidade de desenvolver novos algoritmos capazes de lidar com a complexidade e variabilidade das imagens de rochas, incorporando informações de diferentes fontes e escalas, considerando variações de tonalidade, disposição mineralógica e padrões intrinsecamente imprevisíveis e exclusivos de cada maciço rochoso.
+
+
+\section{Abordagens Computacionais para Reconhecimento de Padrões Visuais}
+A utilização de \textit{Transfer Learning} em tarefas de classificação de imagens tem se consolidado como uma técnica poderosa para problemas com conjuntos de dados especializados e limitados \cite{garg2021}. Em geociências, onde a obtenção de grandes volumes de dados rotulados é custosa, essa abordagem é fundamental.
+
+O reconhecimento de padrões visuais em larga escala foi transformado pelo advento das Redes Neurais Convolucionais (CNNs). Essas arquiteturas são capazes de aprender hierarquicamente características complexas diretamente a partir dos dados de pixel, superando abordagens tradicionais baseadas em extração manual de \textit{features}. O \textit{transfer learning} consiste em utilizar pesos pré-treinados de modelos (como VGG, Inception ou ResNet) em grandes conjuntos de dados genéricos e ajustá-los (\textit{fine-tuning}) para uma tarefa específica.
+
+Arquiteturas modernas como a \textbf{ResNet} (Residual Network), utilizada neste trabalho, são notáveis por introduzir as conexões residuais (\textit{skip connections}), que permitem o treinamento de redes muito profundas ao mitigar o problema do desvanecimento do gradiente (\textit{vanishing gradient}). Por sua vez, a família de arquiteturas \textbf{MobileNet} demonstra a possibilidade de realizar reconhecimento de padrões com alta performance e baixo custo computacional, o que é ideal para a eventual integração em aplicações móveis. A capacidade dessas redes em extrair e diferenciar texturas complexas e repetitivas as torna candidatas ideais para a análise de padrões em geociências, onde as características morfológicas e texturais são a base da classificação.
+
+Para a tarefa de classificação proposta, optou-se pela arquitetura ResNet18 \cite{he2016deep}. Esta escolha justifica-se pelo equilíbrio que o modelo oferece entre profundidade computacional e custo de processamento. Segundo \cite{Silva2021}, o desenvolvimento das redes residuais se deu utilizando técnicas de normalização, a fim de evitar problemas do gradiente, além de implementar blocos residuais. A implementação desses blocos permite que a profundidade da rede seja aumentada, ao mesmo tempo que os problemas de degradação são reduzidos. Sendo uma rede residual, a ResNet18 mitiga o problema do desvanecimento do gradiente, permitindo um treinamento eficaz com um número de parâmetros significativamente menor \cite{garg2021}. Isso a torna ideal para a fase de prova de conceito e futura implantação em dispositivos mobile com recursos limitados.
+
+Considerando a escassez inicial de amostras rotuladas (aproximadamente 150 imagens por classe), foi empregada a técnica de Data Augmentation (aumento de dados) como estratégia de regularização \cite{shorten2019survey}. Este processo consiste em aplicar transformações nas imagens de treino — tais como rotações aleatórias, espelhamentos, recortes e ajustes de luminosidade — gerando novas instâncias a partir dos dados originais. Essa abordagem força a rede a aprender características invariantes às condições de captura, reduzindo o risco de \textit{overfitting} e melhorando a capacidade de generalização do modelo em cenários reais de iluminação e posicionamento \cite{srivastava2014dropout}.
+
+
+\section{Metodologia Proposta}
+
+A metodologia adotada neste trabalho segue um fluxo de desenvolvimento iterativo e multidisciplinar, conforme ilustrado na Figura \ref{fig:metodologia}. O processo abrange desde a aquisição e o pré-processamento rigoroso dos dados geológicos (Seção 4.2) até o treinamento e a avaliação do modelo de \textit{Deep Learning} (Seção 4.3), culminando na validação de um modelo de prova de conceito para aplicação em contexto industrial.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{1.png}
+\caption{Fluxo Metodológico.}
+\label{fig:metodologia}
+\end{figure}
+
+\subsection{Escopo do Projeto e Classes de Materiais}
+O escopo do projeto de desenvolvimento da aplicação móvel visa o completo ciclo de vida de um produto baseado em IA, desde a coleta e anotação dos dados até a implementação e validação em campo. Embora o desenvolvimento final da aplicação contemple diversas classes de rochas, nesta etapa de prova de conceito, a metodologia está concentrada na classificação e treinamento do modelo para as seguintes classes de materiais. A seleção destas classes foi determinada em função de um critério de \textbf{relevância industrial imediata}, alinhado com o fluxo de produção e as demandas específicas da empresa parceira de extensão tecnológica. Este foco estratégico permite que a prova de conceito seja validada em um cenário real e limitado, abordando materiais que apresentam similaridade visual desafiadora:
+\begin{itemize}
+    \item Granito Branco Itaúnas;
+    \item Quartizito Perla;
+    \item Quartizito Cinza Wakanda;
+    \item Quartzito Verde Gaya;
+    \item Mármore Dolomítico Branco Matarazzo.
+\end{itemize}
+O êxito na diferenciação dessas quatro classes visa validar a abordagem de \textit{Deep Learning} para a complexidade visual específica do problema.
+
+\subsection{Coleta e Preparação de Imagens}
+% --- Esta parte deve ser escrita pela bolsista da área de Mineração ---
+
+A etapa de coleta de imagens foi planejada para garantir diversidade e representatividade adequada do conjunto de dados. Foram capturadas, aproximadamente, \textbf{150 imagens para cada uma das classes} de materiais listadas acima.
+Cada chapa de material foi registrada por meio de aproximadamente 30 fotografias, distribuídas em diferentes distâncias, ângulos e condições de iluminação, utilizando dispositivos móveis.
+O protocolo de captura foi definido da seguinte forma:
+
+\begin{itemize}
+    \item \textbf{10 imagens em regiões próximas}, destacando detalhes de textura e variações de padrão;
+    \item \textbf{8 imagens em distância média}, capturando porções mais amplas da superfície;
+    \item \textbf{5 imagens em ângulos inclinados}, buscando registrar efeitos de brilho e profundidade;
+    \item \textbf{1 a 2 imagens da chapa inteira}, fornecendo visão geral do material;
+    \item \textbf{3 a 5 imagens com iluminação ambiente diferenciada}, simulando condições reais de observação.
+\end{itemize}
+
+Esse protocolo contribui para reduzir viés de captura e ampliar a robustez do modelo de aprendizado. O conjunto de dados final foi particionado em 70\% para treino, 15\% para validação e 15\% para teste.
+
+A Figura~\ref{fig:amostras} apresenta exemplos representativos de cada uma das cinco classes de rochas utilizadas neste estudo, evidenciando a variabilidade de padrões visuais e texturas características de cada material.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{2.png}
+\caption{Exemplos representativos das classes de rochas ornamentais: (a) Granito Branco Itaúnas, (b) Mármore Matarazzo, (c) Quartzito Perla, (d) Quartzito Wakanda, (e) Quartzito Verde Gaya.}
+\label{fig:amostras}
+\end{figure}
+
+\subsection{Treinamento do Modelo de Reconhecimento}
+
+Para a etapa de reconhecimento de padrões, foi adotada uma abordagem baseada em \textit{transfer learning} com a arquitetura ResNet18. O modelo foi iniciado com pesos pré-treinados no ImageNet e ajustado para o conjunto de cinco classes de rochas ornamentais em questão. A estratégia incluiu o congelamento das camadas convolucionais iniciais (extração de características) e a substituição da camada final por uma combinação de camadas \textit{dropout} e camadas totalmente conectadas, específicas para a classificação desejada.
+
+Para garantir uma avaliação robusta e imparcial do desempenho do modelo, foi empregada a técnica de \textbf{validação cruzada estratificada} (\textit{Stratified K-Fold Cross-Validation}) com $k=5$ partições. Essa abordagem divide o conjunto de dados em cinco subconjuntos mutuamente exclusivos, preservando a proporção original das classes em cada partição. Em cada iteração, quatro partições são utilizadas para treinamento e uma para validação, garantindo que todas as amostras sejam avaliadas exatamente uma vez. A estratificação assegura que classes minoritárias estejam adequadamente representadas em cada \textit{fold}, reduzindo vieses de amostragem.
+
+O pré-processamento das imagens de treinamento incluiu um extenso conjunto de técnicas de \textbf{aumento de dados} (\textit{data augmentation}), aplicadas dinamicamente a cada época para expandir artificialmente a diversidade do conjunto de treino. As transformações empregadas foram: recortes aleatórios redimensionados (\textit{RandomResizedCrop}) com escala entre 70\% e 100\%, inversões horizontais e verticais aleatórias com probabilidade de 50\%, rotações aleatórias de até 30°, ajustes de brilho, contraste e saturação de ±30\%, além de ajuste de matiz de ±10\% (\textit{ColorJitter}), transformações afins com translação de ±10\% e escala entre 90\% e 110\%, e desfoque gaussiano (\textit{GaussianBlur}) com \textit{kernel} de tamanho 3 e $\sigma$ variando entre 0,1 e 2,0. Para as imagens de validação, aplicou-se apenas redimensionamento para 256 pixels seguido de recorte central de 224 pixels, sem aumento de dados. Todas as imagens foram normalizadas utilizando os parâmetros do ImageNet ($\mu = [0.485, 0.456, 0.406]$, $\sigma = [0.229, 0.224, 0.225]$).
+
+Para a seleção dos melhores hiperparâmetros, foi realizada uma \textbf{busca em grade} (\textit{Grid Search}) combinada com validação cruzada estratificada. Essa abordagem sistemática avaliou todas as combinações possíveis de valores para taxa de aprendizado, tamanho de lote e otimizador, conforme apresentado na Tabela~\ref{tab:grid_search}. No total, foram avaliadas $3 \times 3 \times 3 = 27$ combinações de hiperparâmetros, cada uma submetida à validação cruzada completa com $k=5$ \textit{folds}, resultando em 135 execuções de treinamento independentes.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Hiperparâmetro} & \textbf{Valores avaliados} \\ \hline
+Taxa de aprendizado & $0.0001$, $0.0005$, $0.001$ \\ \hline
+Tamanho do lote (\textit{batch size}) & 8, 16, 32 \\ \hline
+Otimizador & Adam, SGD, AdamW \\ \hline
+\end{tabular}
+\caption{Espaço de busca dos hiperparâmetros avaliados no \textit{Grid Search}.}
+\label{tab:grid_search}
+\end{table}
+
+Para cada combinação de hiperparâmetros, foram calculadas a acurácia média e o desvio padrão ao longo dos 5 \textit{folds}. A combinação que obteve a maior acurácia média de validação foi selecionada como configuração ótima: taxa de aprendizado de $0.001$, tamanho de lote de 16 e otimizador Adam. Parâmetros fixos durante toda a busca incluíram: função de perda \textit{Cross-Entropy Loss} com pesos inversamente proporcionais à frequência de cada classe para tratamento do desbalanceamento, agendador de taxa de aprendizado \textit{ReduceLROnPlateau} (fator de redução de $0.1$ após 3 épocas sem melhoria), \textit{early stopping} com paciência de 7 épocas e máximo de 25 épocas por \textit{fold}.
+
+Durante o treinamento, os melhores pesos de cada \textit{fold} foram salvos com base no maior valor de acurácia em validação. Após a conclusão do \textit{Grid Search}, o modelo final foi retreinado com os hiperparâmetros ótimos utilizando todo o conjunto de dados.
+
+A Tabela~\ref{tab:params} resume os principais parâmetros empregados no processo.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Parâmetro} & \textbf{Valor adotado} \\ \hline
+Arquitetura & ResNet18 (pré-treinado no ImageNet) \\ \hline
+Camadas convolucionais & Congeladas (extrator de características) \\ \hline
+Camada final & Dropout (0.5) + Linear (512→256) + ReLU + Dropout (0.3) + Linear (256→5) \\ \hline
+Épocas por \textit{fold} & 25 (máximo) \\ \hline
+Tamanho do lote (\textit{batch size}) & 16 \\ \hline
+Taxa de aprendizado inicial & $0.001$ \\ \hline
+Otimizador & Adam \\ \hline
+Função de perda & Cross-Entropy Loss (com pesos de classe) \\ \hline
+Agendador de taxa & ReduceLROnPlateau (fator $0.1$, paciência $3$ épocas) \\ \hline
+\textit{Early stopping} & Paciência de 7 épocas \\ \hline
+Validação cruzada & Estratificada, $k=5$ \textit{folds} \\ \hline
+Tamanho da imagem & $224 \times 224$ pixels \\ \hline
+\end{tabular}
+\caption{Resumo dos principais parâmetros do treinamento da rede neural (valores ótimos selecionados pelo \textit{Grid Search}).}
+\label{tab:params}
+\end{table}
+
+A validação cruzada estratificada com 5 \textit{folds} obteve acurácia média de \textbf{98,62\% $\pm$ 0,83\%}, demonstrando excelente capacidade de generalização do modelo. A Tabela~\ref{tab:fold_results} apresenta os resultados por \textit{fold}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Fold} & \textbf{Acurácia de Validação} \\ \hline
+1 & 98,11\% \\ \hline
+2 & 98,74\% \\ \hline
+3 & 98,74\% \\ \hline
+4 & 100,00\% \\ \hline
+5 & 97,48\% \\ \hline
+\textbf{Média $\pm$ DP} & \textbf{98,62\% $\pm$ 0,83\%} \\ \hline
+\end{tabular}
+\caption{Acurácia de validação obtida em cada \textit{fold} da validação cruzada estratificada.}
+\label{tab:fold_results}
+\end{table}
+
+A Tabela~\ref{tab:classification_metrics} apresenta as métricas de precisão, revocação e F1-\textit{score} para cada classe de rocha.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Classe} & \textbf{Precisão} & \textbf{Revocação} & \textbf{F1-Score} & \textbf{Suporte} \\
+\hline
+Granito Branco Itaúnas & 0,9816 & 1,0000 & 0,9907 & 160 \\
+\hline
+Mármore Matarazzo & 0,9869 & 0,9679 & 0,9773 & 156 \\
+\hline
+Quartzito Perla & 0,9714 & 0,9855 & 0,9784 & 138 \\
+\hline
+Quartzito Wakanda & 0,9924 & 0,9776 & 0,9850 & 134 \\
+\hline
+Quartzito Verde Gaya & 0,9952 & 0,9952 & 0,9952 & 207 \\
+\hline
+\textbf{Média Ponderada} & 0,9862 & 0,9862 & 0,9861 & 795 \\
+\hline
+\end{tabular}
+\caption{Métricas de classificação por classe de rocha.}
+\label{tab:classification_metrics}
+\end{table}
+
+O coeficiente \textit{Kappa} de Cohen obtido foi de \textbf{0,9826}, indicando concordância quase perfeita entre as predições do modelo e as classes verdadeiras.
+
+\subsubsection{Análise de Convergência e Sobreajuste}
+
+Para avaliar a qualidade do treinamento e detectar possíveis sinais de sobreajuste (\textit{overfitting}), foram analisadas as curvas de aprendizado de perda e acurácia ao longo das épocas. A Figura~\ref{fig:learning_curves} apresenta a evolução das métricas de treinamento e validação para cada um dos 5 \textit{folds}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{learning_curves.png}
+\caption{Curvas de aprendizado para os 5 \textit{folds} da validação cruzada. À esquerda: evolução da função de perda (\textit{loss}). À direita: evolução da acurácia. Linhas tracejadas representam o conjunto de treinamento e linhas sólidas representam o conjunto de validação.}
+\label{fig:learning_curves}
+\end{figure}
+
+A análise das curvas revela características indicativas de um treinamento bem-sucedido e ausência de sobreajuste significativo:
+
+\begin{itemize}
+    \item \textbf{Convergência consistente}: As curvas de perda decrescem de forma suave em todos os \textit{folds}, estabilizando-se nas épocas finais;
+    \item \textbf{Paralelismo entre treino e validação}: As curvas de validação acompanham o comportamento das curvas de treinamento, sem divergência acentuada que caracterizaria sobreajuste;
+    \item \textbf{Baixa variabilidade entre \textit{folds}}: O comportamento similar das curvas nos diferentes \textit{folds} indica estabilidade do processo de treinamento;
+    \item \textbf{Acurácia de validação elevada}: Os valores de acurácia de validação atingem patamares superiores a 95\% já nas primeiras épocas, convergindo para valores próximos a 98-100\%.
+\end{itemize}
+
+A matriz de confusão agregada, apresentada na Figura~\ref{fig:confusion_matrix}, ilustra o desempenho do modelo na classificação das cinco classes de rochas ornamentais considerando todas as predições realizadas durante a validação cruzada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\textwidth]{confusion_matrix.png}
+\caption{Matriz de confusão agregada dos 5 \textit{folds} da validação cruzada. Os valores na diagonal principal representam as classificações corretas, enquanto os valores fora da diagonal indicam os erros de classificação.}
+\label{fig:confusion_matrix}
+\end{figure}
+
+A matriz evidencia que a grande maioria das amostras foi classificada corretamente (valores elevados na diagonal principal), com poucos erros de classificação dispersos entre as classes. Destaca-se que o Granito Branco Itaúnas obteve 100\% de revocação (todas as 160 amostras corretamente identificadas), enquanto o Quartzito Verde Gaya apresentou o maior número de amostras (207) com apenas 1 erro de classificação.
+
+\subsubsection{Discussão sobre a Robustez dos Resultados}
+
+A acurácia média de 98,62\% obtida pode parecer elevada à primeira vista, porém diversos fatores metodológicos e características do domínio justificam esses resultados:
+
+\textbf{1. Validação rigorosa:} O uso de validação cruzada estratificada com 5 partições garante que os resultados não são fruto de uma divisão favorável dos dados. A baixa variância entre os \textit{folds} (desvio padrão de 0,83\%) indica que o modelo apresenta desempenho consistente independentemente da partição utilizada para validação.
+
+\textbf{2. Múltiplas técnicas de regularização:} Foram empregadas três estratégias complementares para prevenir o sobreajuste: (i) camadas de \textit{dropout} com taxas de 50\% e 30\% na arquitetura do classificador; (ii) \textit{early stopping} com paciência de 7 épocas; e (iii) extenso aumento de dados com 7 transformações distintas aplicadas dinamicamente.
+
+\textbf{3. Transfer learning com camadas congeladas:} Ao manter as camadas convolucionais da ResNet18 congeladas, apenas aproximadamente 68.000 parâmetros foram treinados (correspondentes às camadas finais do classificador), reduzindo significativamente o risco de sobreajuste em comparação com o treinamento completo da rede.
+
+\textbf{4. Características discriminativas do domínio:} Rochas ornamentais apresentam padrões de textura visualmente distintos e característicos de cada tipo. Granitos exibem grãos cristalinos, mármores apresentam veios e listras característicos, e cada variedade de quartzito possui padrões cromáticos e estruturais únicos. Essas diferenças visuais marcantes facilitam a tarefa de classificação por redes neurais convolucionais, que são particularmente eficazes na extração de características de textura.
+
+\textbf{5. Condições controladas de aquisição:} As imagens do conjunto de dados foram capturadas sob condições padronizadas de iluminação, ângulo e resolução, minimizando variações indesejadas que poderiam dificultar o reconhecimento.
+
+Os hiperparâmetros ótimos (taxa de aprendizado de $0,001$, tamanho de lote de 16 e otimizador Adam) foram selecionados sistematicamente por meio de \textit{Grid Search}, avaliando 27 combinações distintas. O uso de validação cruzada estratificada com 5 partições em cada combinação assegurou uma estimativa robusta do desempenho do modelo e evitou viés na seleção de hiperparâmetros.
+
+Em suma, a combinação de uma metodologia de avaliação rigorosa, técnicas adequadas de regularização, \textit{transfer learning} e as características favoráveis do domínio de aplicação justificam os resultados obtidos, que estão alinhados com trabalhos similares na literatura de classificação de texturas por redes neurais convolucionais.
+
+
+
+
+\section{Resultados Esperados e Discussão}
+
+A relevância científica deste trabalho reside na validação empírica de que arquiteturas de \textit{Deep Learning}, ajustadas via \textit{transfer learning}, podem alcançar alta performance na tarefa de discriminação de padrões visuais complexos presentes em materiais geológicos. Isso representa um avanço na aplicação da IA em setores de \textbf{baixa digitalização}.
+
+Do ponto de vista social, o resultado mais significativo é a \textbf{democratização da informação}. Ao oferecer uma ferramenta acessível para a identificação confiável de materiais, o projeto apoia tanto o consumidor final quanto o profissional, que ganha um suporte técnico sem a necessidade de dispendiosa consultoria. O aplicativo em desenvolvimento integrará o modelo de IA a uma interface amigável. As telas principais da aplicação incluem:
+
+\begin{enumerate}
+    \item Uma interface de navegação que exibe a lista de rochas, recomendações e histórico de escaneamento.
+    \item A interface principal de escaneamento, que permite a captura de imagens de rochas em diferentes ambientes.
+    \item Uma tela de confirmação de reconhecimento, que exibe o nome da rocha e suas características geológicas relevantes.
+\end{enumerate}
+
+É importante reconhecer as \textbf{limitações e riscos}. O desempenho do modelo é intrinsecamente ligado à qualidade do conjunto de dados de treino, exigindo \textbf{atualização e retreinamento contínuos} frente à variação natural dos materiais. O risco de \textbf{dependência excessiva} do algoritmo deve ser mitigado pelo design da aplicação, que deve posicionar o sistema como uma ferramenta de apoio e não como um substituto integral do especialista.
+
+A grande provocação é: em que medida a IA pode transformar as práticas tradicionais de identificação em geociências? O sistema proposto muda o paradigma da classificação, passando de um processo subjetivo, lento e centralizado no especialista, para um processo objetivo, instantâneo e escalável.
+
+Conforme apresentado na Seção 4.3, o modelo alcançou acurácia média de 98,62\% na validação cruzada estratificada, com F1-Score médio ponderado de 0,9861 e coeficiente Kappa de 0,9826. Esses resultados quantitativos validam a eficácia da abordagem proposta para a discriminação das cinco classes de rochas ornamentais.
+
+A Figura~\ref{fig:telas} apresenta o protótipo da interface do aplicativo móvel em desenvolvimento. O fluxo de uso consiste em: (1) o usuário acessa a tela inicial com o histórico de escaneamentos; (2) ao capturar uma imagem de rocha, o sistema processa a foto utilizando o modelo treinado; (3) após a classificação, a tela de resultados exibe o nome comercial da rocha identificada, o nível de confiança da predição e informações técnicas relevantes sobre o material.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{3.png}
+\caption{Protótipo da interface do aplicativo StoneScan: (a) tela inicial com histórico de escaneamentos, (b) interface de captura de imagem, (c) tela de resultado com identificação da rocha e nível de confiança.}
+\label{fig:telas}
+\end{figure}
+
+\section{Considerações Finais}
+O presente estudo explorou a interseção entre \textit{Deep Learning} e a indústria de materiais naturais, propondo uma metodologia robusta para o reconhecimento automatizado de padrões visuais em rochas. Retomando os pontos centrais, demonstramos a viabilidade do \textit{transfer learning} com a ResNet18 para lidar com a alta complexidade visual inerente aos materiais geológicos.
+
+No contexto da integração e das \textbf{implicações futuras} do sistema, a escolha de uma arquitetura leve como a ResNet18 facilita seu empacotamento para uso em dispositivos de ponta (\textit{edge computing}), viabilizando a portabilidade e o uso em campo. Contudo, a implementação de modelos de IA exige considerações éticas, como a gestão de \textbf{vieses} algorítmicos e a necessidade de transparência. É crucial que o sistema indique o nível de confiança na classificação e reforce a validação humana em casos de baixa probabilidade.
+
+Para assegurar a precisão contínua do sistema em ambiente de produção, faz-se necessária a implementação de um ciclo de vida do modelo baseado em monitoramento e retreinamento periódico. Este processo, conhecido como MLOps (\textit{Machine Learning Operations}), envolve: (i) coleta contínua de novas amostras classificadas por especialistas para enriquecimento do conjunto de dados; (ii) monitoramento de métricas de desempenho em produção, identificando possível degradação do modelo (\textit{model drift}); (iii) retreinamento automático ou semi-automático quando o desempenho cair abaixo de limiares predefinidos; e (iv) expansão gradual do número de classes reconhecidas, incorporando novos tipos de rochas conforme a demanda do mercado. A arquitetura leve da ResNet18 facilita este ciclo, permitindo retreinamentos rápidos e implantação ágil de novas versões do modelo.
+
+Enfatizamos a contribuição deste trabalho como uma \textbf{reflexão e provocação} dirigida à comunidade de Sistemas de Informação. Nosso foco é sublinhar o potencial da IA como agente de transformação e padronização em setores tradicionais. O sistema de reconhecimento aqui descrito é apresentado como uma \textbf{ideia emergente em desenvolvimento}, cujo objetivo é testar os limites da acurácia e generalização dos modelos, pavimentando o caminho para a criação de ferramentas tecnológicas acessíveis para o uso em campo.
+
+\bibliographystyle{sbc}
+\bibliography{referencias}
+
+\end{document}

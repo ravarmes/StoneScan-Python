@@ -1,0 +1,62 @@
+\begin{thebibliography}{}
+
+\bibitem[Cheng et~al. 2022]{cheng2022}
+Cheng, L., Zhang, H., and Wang, Q. (2022).
+\newblock Deep learning applications in material science: a review.
+\newblock {\em Journal of Materials Research and Technology}, 21:1332--1350.
+
+\bibitem[Garg and Dhiman 2021]{garg2021}
+Garg, S. and Dhiman, G. (2021).
+\newblock A comprehensive review of transfer learning for image classification.
+\newblock {\em Artificial Intelligence Review}, 54(1):555--605.
+
+\bibitem[He et~al. 2016]{he2016deep}
+He, K., Zhang, X., Ren, S., and Sun, J. (2016).
+\newblock Deep residual learning for image recognition.
+\newblock {\em Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, pages 770--778.
+
+\bibitem[Kumar et~al. 2023]{kumar2023}
+Kumar, S., Jain, P., and Singh, V. (2023).
+\newblock Digital transformation in the construction industry: A review of ai
+  applications.
+\newblock In {\em Proceedings of the 2023 International Conference on
+  Artificial Intelligence and Smart Systems (ICAIS)}, pages 1201--1207. IEEE.
+
+\bibitem[LeCun et~al. 2015]{lecun2015deep}
+LeCun, Y., Bengio, Y., and Hinton, G. (2015).
+\newblock Deep learning.
+\newblock {\em Nature}, 521(7553):436--444.
+
+\bibitem[Liu et~al. 2019]{liu2019deep}
+Liu, L., Ouyang, W., Wang, X., Fieguth, P., Chen, J., Liu, X., and
+  Pietik{\"a}inen, M. (2019).
+\newblock Deep learning for generic object detection: A survey.
+\newblock {\em International Journal of Computer Vision}, 128(2):261--318.
+
+\bibitem[Shorten and Khoshgoftaar 2019]{shorten2019survey}
+Shorten, C. and Khoshgoftaar, T.~M. (2019).
+\newblock A survey on image data augmentation for deep learning.
+\newblock {\em Journal of Big Data}, 6(1):1--48.
+
+\bibitem[Silva 2021]{Silva2021}
+Silva, C. F.~d. (2021).
+\newblock Redes residuais: Sobre quantidade de camadas e variância intraclasse
+  utilizando aprendizagem não supervisionada.
+\newblock Dissertação de mestrado, Programa de Pós-Graduação em
+  Informática, Universidade Federal da Paraíba (UFPB/CI), João Pessoa, PB.
+
+\bibitem[Soares et~al. 2025]{soares2025}
+Soares, P., Ensina, L., and Foleis, J. (2025).
+\newblock A hybrid approach combining cnn and ensemble algorithms for
+  dermoscopic image classification.
+\newblock In {\em Anais do XXII Encontro Nacional de Inteligência Artificial e
+  Computacional}, pages 1527--1538, Porto Alegre, RS, Brasil. SBC.
+
+\bibitem[Srivastava et~al. 2014]{srivastava2014dropout}
+Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
+  R. (2014).
+\newblock Dropout: a simple way to prevent neural networks from overfitting.
+\newblock {\em The Journal of Machine Learning Research}, 15(1):1929--1958.
+
+\end{thebibliography}

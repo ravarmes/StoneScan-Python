@@ -1,0 +1,227 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+\usepackage{graphicx,url}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{xcolor}
+
+
+\sloppy
+
+\title{StoneScan: Inteligência Artificial para Reconhecimento de Padrões Visuais em Materiais Naturais}
+
+% NÃO INSERIR NOMES DE AUTORES OU INSTITUIÇÕES
+% A submissão deve ser ANÔNIMA.
+
+\author{Autor 1\inst{1}, Autor 2\inst{1}, Autor 3\inst{1} }
+
+\address{Instituição de Pesquisa Anônima 1 -- Departamento de Ciência da Computação\\
+	Endereço Omitido por Anonimato
+	 \email{autor1@gmail.com, autor2@gmail.com,
+  autor3@gmail.com}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+O presente trabalho propõe o desenvolvimento de um sistema baseado em \textbf{Visão Computacional} para a classificação automatizada de materiais pétreos ornamentais a partir de imagens digitais. O objetivo é validar uma metodologia de \textit{Deep Learning} que utiliza Redes Neurais Convolucionais (CNNs) para identificar e diferenciar padrões geológicos sutis, reduzindo a subjetividade inerente aos métodos de inspeção humana. A motivação primária reside na busca pela padronização e aumento da eficiência no processo de identificação de materiais em um setor de elevada relevância econômica global. A contribuição deste estudo é de natureza tecnológica e metodológica, demonstrando a viabilidade da aplicação de técnicas de \textit{transfer learning} com arquiteturas como a ResNet para problemas de classificação visual em geociências. Espera-se obter um modelo de prova de conceito com alta acurácia, que sirva como base para a transformação digital das práticas de classificação de materiais naturais.
+
+\textcolor{red}{\textbf{Instrução CONJUNTA:} Revisar e refinar o Resumo para garantir que o número de palavras esteja estritamente abaixo do limite de 200, focando apenas nos objetivos, contribuição e resultados mais relevantes.}
+\end{abstract}
+
+\section{Introdução}
+O avanço das tecnologias de \textbf{Inteligência Artificial (IA)}, em particular o \textit{Deep Learning}, tem permitido uma penetração cada vez maior em setores tradicionalmente caracterizados por processos manuais e intensivos em conhecimento especializado, como a indústria de materiais \cite{cheng2022}. Este cenário tem impulsionado a aplicação de IA para automatizar tarefas complexas de inspeção e classificação visual.
+
+O reconhecimento de padrões visuais, que antes dependia exclusivamente da experiência e acuidade humana, pode agora ser escalonado por meio de algoritmos de Visão Computacional. A aplicação dessas técnicas em materiais naturais, como rochas ornamentais e agregados, justifica-se pela complexidade e alta variabilidade dos padrões geológicos. A identificação precisa de um material envolve a análise de texturas, cores, veios e inclusões, elementos cruciais para determinar sua aplicação estética e funcional, bem como seu valor de mercado.
+
+O sistema proposto neste trabalho busca desenvolver uma aplicação móvel inovadora, utilizando \textbf{redes neurais} para reconhecer e nomear diferentes tipos de rochas (como granito, mármore e quartzito) a partir de fotografias de superfícies instaladas, como pias, pisos e paredes. Esta iniciativa visa introduzir objetividade e padronização, impulsionando a eficiência econômica do setor e democratizando o acesso à informação técnica, auxiliando tanto leigos quanto profissionais na tomada de decisões.
+
+\textcolor{red}{\textbf{Instrução Bolsista de INFORMÁTICA:} Acrescentar uma breve discussão sobre a evolução das abordagens de Visão Computacional, mencionando como as CNNs superaram as técnicas tradicionais (baseadas em SIFT, HOG) na análise de texturas complexas como as geológicas. Mencionar a necessidade de portabilidade (aplicativo).}
+
+\section{Contexto e Desafios da Classificação de Materiais Pétreos}
+A digitalização e a aplicação de tecnologias da informação têm se tornado imperativas no setor de construção e mineração, visando superar desafios de padronização e qualidade \cite{kumar2023}. O setor de materiais naturais, particularmente o segmento de rochas ornamentais, possui uma importância econômica global significativa, sendo um componente fundamental das indústrias de construção civil e design de interiores. O país em foco, sendo um dos principais produtores e exportadores mundiais, sublinha a relevância de otimizar os processos de classificação desses recursos.
+
+Apesar da maturidade industrial, o setor enfrenta desafios práticos no que tange à identificação. As rochas ornamentais apresentam \textbf{alta variabilidade visual} dentro de uma mesma classificação comercial e diferenças sutis entre materiais distintos, dependendo da mineralogia, tamanho e distribuição dos grãos, e presença de estruturas secundárias. Para o consumidor e profissionais menos especializados, a identificação correta de uma laje a partir de uma amostra ou foto é uma tarefa complexa e propensa a erros.
+
+As dificuldades práticas incluem a dependência de condições de iluminação, a avaliação subjetiva de textura e a interpretação de características microgeológicas visíveis. A ausência de ferramentas acessíveis para a identificação de rochas pode levar a escolhas inadequadas de materiais, impactando negativamente a estética e funcionalidade de projetos. Erros na escolha de materiais estão, inclusive, entre os fatores principais de retrabalhos em construções residenciais, conforme dados da indústria. Portanto, o desenvolvimento de um método de identificação rápido e objetivo, suportado por tecnologia, é crucial para mitigar esses riscos e aumentar a confiabilidade.
+
+\textcolor{red}{\textbf{Instrução Bolsista de MINERAÇÃO (Análise Bibliográfica):} Realizar uma busca em bases de dados (Scopus, Google Scholar) sobre trabalhos recentes que aplicam IA/Visão Computacional na classificação de rochas ornamentais e/ou materiais geológicos. Identificar 2 a 3 artigos principais na área e, com base neles, escrever um parágrafo que descreva o \textbf{Estado da Arte} (o que já existe) e, em seguida, um parágrafo que defina claramente as \textbf{lacunas} que nosso trabalho preenche e as suas \textbf{principais contribuições} em relação à literatura.}
+
+\textcolor{red}{\textbf{Instrução Bolsista de MINERAÇÃO:} Inserir uma citação relevante (e neutra, sem revelar autoria) sobre a importância da padronização e qualidade na classificação de rochas ornamentais (conforme o formato \cite{...}). Descrever mais detalhadamente 2 ou 3 dos principais fatores geológicos que tornam a diferenciação visual desafiadora (e.g., mudança de cor devido à oxidação, presença de veios ou fraturas).}
+
+\section{Abordagens Computacionais para Reconhecimento de Padrões Visuais}
+A utilização de \textit{Transfer Learning} em tarefas de classificação de imagens tem se consolidado como uma técnica poderosa para problemas com conjuntos de dados especializados e limitados \cite{garg2021}. Em geociências, onde a obtenção de grandes volumes de dados rotulados é custosa, essa abordagem é fundamental.
+
+O reconhecimento de padrões visuais em larga escala foi transformado pelo advento das \textbf{Redes Neurais Convolucionais (CNNs)}. Essas arquiteturas são capazes de aprender hierarquicamente características complexas diretamente a partir dos dados de pixel, superando abordagens tradicionais baseadas em extração manual de \textit{features}. O \textit{transfer learning} consiste em utilizar pesos pré-treinados de modelos (como VGG, Inception ou ResNet) em grandes conjuntos de dados genéricos e ajustá-los (\textit{fine-tuning}) para uma tarefa específica.
+
+Arquiteturas modernas como a \textbf{ResNet} (Residual Network), utilizada neste trabalho, são notáveis por introduzir as conexões residuais (\textit{skip connections}), que permitem o treinamento de redes muito profundas ao mitigar o problema do desvanecimento do gradiente (\textit{vanishing gradient}). Por sua vez, a família de arquiteturas \textbf{MobileNet} demonstra a possibilidade de realizar reconhecimento de padrões com alta performance e baixo custo computacional, o que é ideal para a eventual integração em aplicações móveis. A capacidade dessas redes em extrair e diferenciar texturas complexas e repetitivas as torna candidatas ideais para a análise de padrões em geociências, onde as características morfológicas e texturais são a base da classificação.
+
+\textcolor{red}{\textbf{Instrução (Bolsista de INFORMÁTICA):} 
+Justificar a escolha da arquitetura ResNet18, destacando o bom equilíbrio entre desempenho e simplicidade, ideal para esta fase inicial do projeto. 
+Incluir também uma breve explicação sobre o uso de \textit{Data Augmentation}, isto é, técnicas que geram variações nas imagens originais (como rotações, espelhamentos e ajustes de brilho) para aumentar a diversidade do conjunto de treino e melhorar a capacidade de generalização do modelo.}
+
+
+\section{Metodologia Proposta}
+
+A metodologia adotada neste trabalho segue um fluxo de desenvolvimento iterativo e multidisciplinar, conforme ilustrado na Figura \ref{fig:metodologia}. O processo abrange desde a aquisição e o pré-processamento rigoroso dos dados geológicos (Seção 4.2) até o treinamento e a avaliação do modelo de \textit{Deep Learning} (Seção 4.3), culminando na validação de um modelo de prova de conceito para aplicação em contexto industrial.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{1.png}
+\caption{Fluxo Metodológico.}
+\label{fig:metodologia}
+\end{figure}
+
+\subsection{Escopo do Projeto e Classes de Materiais}
+O escopo do projeto de desenvolvimento da aplicação móvel visa o completo ciclo de vida de um produto baseado em IA, desde a coleta e anotação dos dados até a implementação e validação em campo. Embora o desenvolvimento final da aplicação contemple diversas classes de rochas, nesta etapa de prova de conceito, a metodologia está concentrada na classificação e treinamento do modelo para as seguintes classes de materiais. A seleção destas classes foi determinada em função de um critério de \textbf{relevância industrial imediata}, alinhado com o fluxo de produção e as demandas específicas da empresa parceira de extensão tecnológica. Este foco estratégico permite que a prova de conceito seja validada em um cenário real e limitado, abordando materiais que apresentam similaridade visual desafiadora:
+\begin{itemize}
+    \item Granito Branco Itaúnas;
+    \item Quartizito Perla;
+    \item Quartizito Wakanda;
+    \item Quartzito Verde Gaya.
+\end{itemize}
+O êxito na diferenciação dessas quatro classes visa validar a abordagem de \textit{Deep Learning} para a complexidade visual específica do problema.
+
+\subsection{Coleta e Preparação de Imagens}
+% --- Esta parte deve ser escrita pela bolsista da área de Mineração ---
+
+A etapa de coleta de imagens foi planejada para garantir diversidade e representatividade adequada do conjunto de dados. Foram capturadas, aproximadamente, \textbf{150 imagens para cada uma das classes} de materiais listadas acima.
+Cada chapa de material foi registrada por meio de aproximadamente 30 fotografias, distribuídas em diferentes distâncias, ângulos e condições de iluminação, utilizando dispositivos móveis.
+O protocolo de captura foi definido da seguinte forma:
+
+\begin{itemize}
+    \item \textbf{10 imagens em regiões próximas}, destacando detalhes de textura e variações de padrão;
+    \item \textbf{8 imagens em distância média}, capturando porções mais amplas da superfície;
+    \item \textbf{5 imagens em ângulos inclinados}, buscando registrar efeitos de brilho e profundidade;
+    \item \item \textbf{1 a 2 imagens da chapa inteira}, fornecendo visão geral do material;
+    \item \textbf{3 a 5 imagens com iluminação ambiente diferenciada}, simulando condições reais de observação.
+\end{itemize}
+
+Esse protocolo contribui para reduzir viés de captura e ampliar a robustez do modelo de aprendizado. O conjunto de dados final foi particionado em 70\% para treino, 15\% para validação e 15\% para teste.
+
+\textcolor{red}{\textbf{Instrução Bolsista de MINERAÇÃO (Para Versão Final):} Inserir uma figura (com subfiguras A, B, C, D) nesta subseção, mostrando um exemplo representativo de cada uma das 4 classes de rochas (Granito Branco Itaúnas, Quartizito Perla, Quartizito Wakanda, Quartzito Verde Gaya), com legenda clara.}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{2.png}
+\caption{Figura 2}
+\label{fig:1}
+\end{figure}
+
+\subsection{Treinamento do Modelo de Reconhecimento}
+% --- Esta parte deve ser escrita pela bolsista da área de Informática ---
+
+Para a etapa de reconhecimento de padrões, foi adotada uma abordagem baseada em \textit{transfer learning} com a arquitetura ResNet18. O modelo foi inicializado com pesos pré-treinados em ImageNet e ajustado para o conjunto de classes do problema em questão. A estratégia incluiu o congelamento das camadas convolucionais iniciais e a substituição da camada final por uma combinação de \textit{dropout} e camada totalmente conectada, específica para a classificação desejada.
+
+O conjunto de dados foi particionado em três subconjuntos mutuamente exclusivos: treino (70\%), validação (15\%) e teste (15\%). O conjunto de treino foi utilizado para o ajuste iterativo dos pesos do modelo, enquanto o conjunto de validação monitorou a convergência e evitou o sobreajuste (\textit{overfitting}) durante as 15 épocas. O \textbf{conjunto de teste} foi reservado exclusivamente para a avaliação final e imparcial do desempenho do modelo treinado, garantindo a capacidade de generalização para dados não vistos.
+
+Os hiperparâmetros foram configurados conforme segue: 15 épocas de treinamento, \textit{batch size} de 16, taxa de aprendizado inicial de $0.001$, otimizador Adam e função de perda \textit{Cross-Entropy Loss}. Um agendador de taxa de aprendizado do tipo \textit{StepLR} foi utilizado para reduzir a taxa em um fator de $0.1$ a cada 7 épocas, promovendo melhor convergência.
+
+O pré-processamento das imagens incluiu redimensionamento, recortes aleatórios, rotações, inversões horizontais e verticais, além de ajustes sutis de brilho, contraste e saturação. Essas transformações aumentaram a variabilidade do conjunto de treino e reduziram o risco de sobreajuste (\textit{overfitting}).
+
+Durante o treinamento, os melhores pesos foram salvos com base no maior valor de acurácia em validação, critério que assegurou a capacidade de generalização para dados não vistos.
+
+A Tabela~\ref{tab:params} resume os principais parâmetros empregados no processo.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Parâmetro} & \textbf{Valor adotado} \\ \hline
+Épocas & 15 \\ \hline
+Tamanho do lote (\textit{batch size}) & 16 \\ \hline
+Taxa de aprendizado inicial & $0.001$ \\ \hline
+Otimizador & Adam \\ \hline
+Função de perda & Cross-Entropy Loss \\ \hline
+Agendador de taxa & StepLR (fator $0.1$ a cada $7$ épocas) \\ \hline
+Arquitetura & ResNet18 (camadas convolucionais congeladas) \\ \hline
+Camada final & Dropout $(0.5)$ + Linear \\ \hline
+\end{tabular}
+\caption{Resumo dos principais parâmetros do treinamento da rede neural.}
+\label{tab:params}
+\end{table}
+
+Os hiperparâmetros apresentados foram definidos a partir de testes exploratórios e de valores de referência comumente adotados em arquiteturas ResNet de pequeno porte. 
+Não foi realizada uma busca sistemática de hiperparâmetros (grid search, random search ou métodos semelhantes), uma vez que esta etapa teve como principal objetivo avaliar a viabilidade técnica da abordagem proposta, e não a otimização de desempenho do modelo. 
+A configuração final priorizou um equilíbrio entre acurácia adequada e custo computacional reduzido, considerando o caráter experimental e interdisciplinar do estudo.
+
+\textcolor{red}{\textbf{Instrução (Bolsista de INFORMÁTICA):} 
+Criar uma subseção (por exemplo, 4.3.1) descrevendo o ambiente de desenvolvimento e as ferramentas utilizadas (como Python, PyTorch ou TensorFlow, além das especificações do hardware e GPU disponíveis). Refazer também a descrição do treinamento (Seção 4.3) incluindo um método de busca sistemática de hiperparâmetros (por exemplo, \textit{Grid Search} ou \textit{Random Search}). Apresentar os intervalos de valores testados para cada parâmetro relevante (como taxa de aprendizado, tamanho do lote e número de épocas), o método de busca adotado e os valores finais selecionados com base na melhor acurácia de validação. O texto deve manter linguagem científica e explicitar o critério de escolha dos hiperparâmetros de forma reprodutível. \textbf{Ajuste no Script:} Garanta que o script de treinamento seja refatorado para realizar a separação estrita do conjunto de teste (15\%) e que a avaliação final do modelo seja feita utilizando este conjunto de teste reservado.}
+
+
+\section{Resultados Esperados e Discussão}
+
+A relevância científica deste trabalho reside na validação empírica de que arquiteturas de \textit{Deep Learning}, ajustadas via \textit{transfer learning}, podem alcançar alta performance na tarefa de discriminação de padrões visuais complexos presentes em materiais geológicos. Isso representa um avanço na aplicação da IA em setores de \textbf{baixa digitalização}.
+
+Do ponto de vista social, o resultado mais significativo é a \textbf{democratização da informação}. Ao oferecer uma ferramenta acessível para a identificação confiável de materiais, o projeto apoia tanto o consumidor final quanto o profissional, que ganha um suporte técnico sem a necessidade de dispendiosa consultoria. O aplicativo em desenvolvimento integrará o modelo de IA a uma interface amigável. As telas principais da aplicação incluem:
+
+\begin{enumerate}
+    \item Uma interface de navegação que exibe a lista de rochas, recomendações e histórico de escaneamento.
+    \item A interface principal de escaneamento, que permite a captura de imagens de rochas em diferentes ambientes.
+    \item Uma tela de confirmação de reconhecimento, que exibe o nome da rocha e suas características geológicas relevantes.
+\end{enumerate}
+
+É importante reconhecer as \textbf{limitações e riscos}. O desempenho do modelo é intrinsecamente ligado à qualidade do conjunto de dados de treino, exigindo \textbf{atualização e retreinamento contínuos} frente à variação natural dos materiais. O risco de \textbf{dependência excessiva} do algoritmo deve ser mitigado pelo design da aplicação, que deve posicionar o sistema como uma ferramenta de apoio e não como um substituto integral do especialista.
+
+A grande provocação é: em que medida a IA pode transformar as práticas tradicionais de identificação em geociências? O sistema proposto muda o paradigma da classificação, passando de um processo subjetivo, lento e centralizado no especialista, para um processo objetivo, instantâneo e escalável.
+
+\textcolor{red}{\textbf{Instrução Bolsista de INFORMÁTICA (Para Versão Final):} Inserir os resultados quantitativos de desempenho do modelo nesta seção. Isso deve incluir: 1) Uma tabela ou gráfico com métricas como \textbf{Acurácia, Precisão, Recall e F1-Score} para o conjunto de teste; 2) Uma \textbf{Figura} mostrando o protótipo da interface do aplicativo (em smartphone ou web) com exemplos de uso (explicando a utilização e o fluxo do usuário), conforme a descrição das 3 telas principais.}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{3.png}
+\caption{Telas principais do aplicativo.}
+\label{fig:telas}
+\end{figure}
+
+\section{Considerações Finais}
+O presente estudo explorou a interseção entre \textit{Deep Learning} e a indústria de materiais naturais, propondo uma metodologia robusta para o reconhecimento automatizado de padrões visuais em rochas. Retomando os pontos centrais, demonstramos a viabilidade do \textit{transfer learning} com a ResNet18 para lidar com a alta complexidade visual inerente aos materiais geológicos.
+
+No contexto da integração e das \textbf{implicações futuras} do sistema, a escolha de uma arquitetura leve como a ResNet18 facilita seu empacotamento para uso em dispositivos de ponta (\textit{edge computing}), viabilizando a portabilidade e o uso em campo. Contudo, a implementação de modelos de IA exige considerações éticas, como a gestão de \textbf{vieses} algorítmicos e a necessidade de transparência. É crucial que o sistema indique o nível de confiança na classificação e reforce a validação humana em casos de baixa probabilidade.
+
+\textcolor{red}{\textbf{Instrução Bolsista de INFORMÁTICA (Para Versão Final):} Elaborar um parágrafo detalhado sobre a manutenção e o ciclo de vida do modelo, abordando a necessidade de \textit{monitoring} contínuo do desempenho em campo e a estratégia de \textit{re-training} para garantir a precisão contínua frente à variação natural dos materiais e novas classificações. Este parágrafo deve ser inserido no bloco de Implicações na Conclusão.}
+
+Enfatizamos a contribuição deste trabalho como uma \textbf{reflexão e provocação} dirigida à comunidade de Sistemas de Informação. Nosso foco é sublinhar o potencial da IA como agente de transformação e padronização em setores tradicionais. O sistema de reconhecimento aqui descrito é apresentado como uma \textbf{ideia emergente em desenvolvimento}, cujo objetivo é testar os limites da acurácia e generalização dos modelos, pavimentando o caminho para a criação de ferramentas tecnológicas acessíveis para o uso em campo.
+
+\textcolor{red}{\textbf{Instrução CONJUNTA:} Assegurar que a \textbf{Bibliografia} (referências) contenha pelo menos 5 artigos/livros/fontes relevantes e neutras, conforme as orientações (IA, Visão Computacional, Setor de Rochas Ornamentais). Realizar a última checagem de anonimato.}
+
+\bibliographystyle{sbc}
+\bibliography{referencias}
+% Sugestão de entradas BibTeX para o seu arquivo 'referencias.bib' (a serem verificadas e incluídas no arquivo pelo usuário):
+% 
+% @article{cheng2022,
+%   title={{Deep learning applications in material science: a review}},
+%   author={Cheng, L. and Zhang, H. and Wang, Q.},
+%   journal={Journal of Materials Research and Technology},
+%   volume={21},
+%   pages={1332--1350},
+%   year={2022},
+%   publisher={Elsevier}
+% }
+% 
+% @inproceedings{kumar2023,
+%   title={{Digital transformation in the construction industry: A review of AI applications}},
+%   author={Kumar, S. and Jain, P. and Singh, V.},
+%   booktitle={Proceedings of the 2023 International Conference on Artificial Intelligence and Smart Systems (ICAIS)},
+%   pages={1201--1207},
+%   year={2023},
+%   organization={IEEE}
+% }
+% 
+% @article{garg2021,
+%   title={{A comprehensive review of transfer learning for image classification}},
+%   author={Garg, S. and Dhiman, G.},
+%   journal={Artificial Intelligence Review},
+%   volume={54},
+%   issue={1},
+%   pages={555--605},
+%   year={2021},
+%   publisher={Springer}
+% }
+% 
+% (Adicionar mais referências neutras, como ABIROCHAS/FINDES/INBUILT, formatadas em BibTeX se forem usadas no texto).
+
+\end{document}

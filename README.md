@@ -29,52 +29,160 @@ O StoneScan é um aplicativo inovador que utiliza inteligência artificial para 
 
 O projeto é resultado de uma colaboração multidisciplinar entre estudantes de Sistemas de Informação e Técnico em Mineração, sob orientação docente. As informações sobre as rochas são baseadas em fontes autorizadas, incluindo o manual de rochas ornamentais do SindRochas e dados fornecidos por empresas parceiras do setor.
 
-### :notebook_with_decorative_cover: Arquitetura do Sistema <a name="-architecture"/></a>
+## :rock: Classes de Rochas <a name="-classes"/></a>
+
+O modelo é treinado para classificar as seguintes 5 classes de rochas ornamentais:
+
+| Código da Pasta | Nome Comercial |
+|-----------------|----------------|
+| g-03 | Granito Branco Itaúnas |
+| m-02 | Mármore Matarazzo |
+| q-01 | Quartzito Perla |
+| q-02 | Quartzito Wakanda |
+| q-03 | Quartzito Verde Gaya |
+
+## :notebook_with_decorative_cover: Arquitetura do Sistema <a name="-architecture"/></a>
 
 <img src="assets/architecture.png" width="700">
 
-### Arquivos
+## :file_folder: Estrutura do Projeto <a name="-structure"/></a>
 
-| Arquivo                              | Descrição                                                                                                                                                           |
-|-------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model_training.py                    | Implementação principal do modelo de deep learning usando TensorFlow e MobileNetV2 para classificação de imagens de rochas. Inclui pipeline completo de treinamento. |
-| model_development.ipynb              | Notebook Jupyter para desenvolvimento, experimentação e validação do modelo de classificação de rochas. |
-| .gitignore                          | Configurações para ignorar arquivos e diretórios específicos no controle de versão.                                                                                  |
-
-### Características Principais
-
-- Utilização do MobileNetV2 pré-treinado para extração de características
-- Data augmentation para melhor generalização do modelo
-- Pipeline de treinamento em duas fases (transfer learning e fine-tuning)
-- Sistema de logging para monitoramento do treinamento
-- Callbacks para early stopping e checkpointing
-- Visualização do histórico de treinamento
-
-### Requisitos do Sistema
-
-- Python 3.x
-- TensorFlow 2.x
-- NumPy
-- Matplotlib
-- Logging
-
-### Como Executar
-
-1. Clone o repositório:
-```bash
-git clone https://github.com/seu-usuario/StoneScan-Python.git
+```
+StoneScan-Python/
+├── dataset/                    # Pasta com as imagens de treinamento
+│   ├── g-03/                   # Granito Branco Itaúnas
+│   ├── m-02/                   # Mármore Matarazzo
+│   ├── q-01/                   # Quartzito Perla
+│   ├── q-02/                   # Quartzito Wakanda
+│   └── q-03/                   # Quartzito Verde Gaya
+├── results/                    # Resultados do treinamento (gerado automaticamente)
+│   ├── confusion_matrix.png
+│   ├── learning_curves.png
+│   ├── classification_report.txt
+│   └── best_model.pth
+├── assets/                     # Logos e imagens do projeto
+├── train_rock_classifier.py    # Script principal de treinamento
+├── requirements.txt            # Dependências do projeto
+└── README.md
 ```
 
-2. Instale as dependências:
+## :gear: Características Técnicas <a name="-features"/></a>
+
+### Modelo de Deep Learning
+- **Arquitetura**: ResNet18 com Transfer Learning (pré-treinado no ImageNet)
+- **Framework**: PyTorch
+- **Validação**: K-Fold Cross-Validation estratificada (5 folds por padrão)
+- **Otimização de Hiperparâmetros**: Grid Search
+
+### Data Augmentation
+- Random Resize Crop
+- Flips horizontais e verticais
+- Rotação aleatória
+- Color Jitter (brilho, contraste, saturação)
+- Affine transformations
+- Gaussian Blur
+
+### Métricas de Avaliação
+- Acurácia
+- Precisão, Recall e F1-Score
+- Matriz de Confusão
+- Cohen's Kappa
+
+## :computer: Requisitos do Sistema <a name="-requirements"/></a>
+
+- Python 3.8+
+- PyTorch 2.0+
+- torchvision 0.15+
+- NumPy, Pandas
+- scikit-learn
+- Matplotlib, Seaborn
+- tqdm
+
+GPU com suporte CUDA é recomendada para treinamento mais rápido.
+
+## :rocket: Como Executar <a name="-how-to-run"/></a>
+
+### 1. Clone o repositório:
+```bash
+git clone https://github.com/ravarmes/StoneScan-Python.git
+cd StoneScan-Python
+```
+
+### 2. Crie um ambiente virtual (recomendado):
+```bash
+python -m venv venv
+venv\Scripts\activate  # Windows
+# ou
+source venv/bin/activate  # Linux/Mac
+```
+
+### 3. Instale as dependências:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Execute o treinamento:
+### 4. Baixe o dataset do Kaggle:
+
+O dataset de imagens está hospedado no Kaggle. Você pode baixá-lo de duas formas:
+
+**Opção A - Via Kaggle API (recomendado):**
 ```bash
-python model_training.py
+# Instale a API do Kaggle (se ainda não tiver)
+pip install kaggle
+
+# Configure suas credenciais do Kaggle (~/.kaggle/kaggle.json)
+# Veja: https://github.com/Kaggle/kaggle-api#api-credentials
+
+# Baixe e extraia o dataset
+kaggle datasets download -d ravarmes2/stonescan -p dataset/ --unzip
 ```
 
-### Resultados
+**Opção B - Download manual:**
+1. Acesse: https://www.kaggle.com/datasets/ravarmes2/stonescan
+2. Clique em "Download"
+3. Extraia o conteúdo para a pasta `dataset/`
 
-O modelo gera gráficos de acurácia e perda durante o treinamento, salvos como 'training_history.png'. O melhor modelo é automaticamente salvo como 'best_model.keras'. 
+Após o download, a estrutura deve ficar:
+```
+dataset/
+├── g-03/   # imagens de Granito Branco Itaúnas
+├── m-02/   # imagens de Mármore Matarazzo
+├── q-01/   # imagens de Quartzito Perla
+├── q-02/   # imagens de Quartzito Wakanda
+└── q-03/   # imagens de Quartzito Verde Gaya
+```
+
+### 5. Execute o treinamento:
+```bash
+# Treinamento padrão com validação cruzada
+python train_rock_classifier.py
+
+# Com Grid Search para otimização de hiperparâmetros
+python train_rock_classifier.py --grid-search
+
+# Especificando parâmetros customizados
+python train_rock_classifier.py --epochs 50 --batch-size 32 --learning-rate 0.0005
+```
+
+## :bar_chart: Resultados <a name="-results"/></a>
+
+Após o treinamento, os seguintes arquivos são gerados na pasta `results/`:
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `confusion_matrix.png` | Matriz de confusão do modelo |
+| `learning_curves.png` | Gráficos de loss e acurácia por época |
+| `classification_report.txt` | Relatório detalhado com métricas por classe |
+| `best_model.pth` | Pesos do melhor modelo treinado |
+| `training_config.json` | Configurações utilizadas no treinamento |
+| `grid_search_results.csv` | Resultados do Grid Search (se executado) |
+
+## :page_facing_up: Licença <a name="-license"/></a>
+
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+<p align="center">
+  Feito com :purple_heart: por Rafael Vargas Mesquita
+</p>
